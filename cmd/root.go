@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -8,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/lielalmog/netwiz/cmd/http"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -16,17 +16,36 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "netwiz",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Use:   "nw",
+	Short: "NetWiz: A versatile network toolkit",
+	Long: `NetWiz (nw) is a versatile network toolkit built in Go, offering a range of utilities for network exploration and diagnostics. It includes a simple HTTP client, a ping tool, and a port scanner, making it a handy toolset for network administrators, developers, and IT professionals.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+The nw toolkit is designed to be intuitive and user-friendly, with commands and flags that follow conventional CLI patterns. 
+
+Examples of use:
+
+1. HTTP Client:
+   Send a GET request:
+   $ nw http --url https://example.com
+   
+   Send a POST request with data:
+   $ nw http --url https://example.com/api --method post --data '{"key":"value"}'
+
+2. Ping Tool:
+   Ping a host:
+   $ nw ping google.com
+
+   Ping a host with a specific number of echo requests:
+   $ nw ping --number 5 google.com
+
+3. Port Scanner:
+   Scan a host for open ports:
+   $ nw portscanner --host 192.168.1.1
+
+   Scan a host within a specific port range:
+   $ nw portscanner --host 192.168.1.1 --range 80-100
+
+For more information and detailed usage of each command, use the help command followed by the command name, e.g., 'nw help httpclient'.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -50,6 +69,8 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	rootCmd.AddCommand(http.HttpCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.
