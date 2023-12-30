@@ -16,9 +16,9 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "nw",
-	Short: "NetWiz: A versatile network toolkit",
-	Long: `NetWiz (nw) is a versatile network toolkit built in Go, offering a range of utilities for network exploration and diagnostics. It includes a simple HTTP client, a ping tool, and a port scanner, making it a handy toolset for network administrators, developers, and IT professionals.
+	Use:   "netwiz",
+	Short: "Network Wizard: A versatile network toolkit",
+	Long: `Network Wizard (netwiz) is a versatile network toolkit built in Go, offering a range of utilities for network exploration and diagnostics. It includes a simple HTTP client, a ping tool, and a port scanner, making it a handy toolset for network administrators, developers, and IT professionals.
 
 The nw toolkit is designed to be intuitive and user-friendly, with commands and flags that follow conventional CLI patterns. 
 
@@ -26,24 +26,27 @@ Examples of use:
 
 1. HTTP Client:
    Send a GET request:
-   $ nw http --url https://example.com
+   $ netwiz http --url https://example.com
    
    Send a POST request with data:
-   $ nw http --url https://example.com/api --method post --data '{"key":"value"}'
+   $ netwiz http --url https://example.com/api --method post --data '{"key":"value"}'
 
 2. Ping Tool:
    Ping a host:
-   $ nw ping google.com
+   $ netwiz ping google.com
 
    Ping a host with a specific number of echo requests:
-   $ nw ping --number 5 google.com
+   $ netwiz ping --number 5 google.com
 
-3. Port Scanner:
+3. Port:
    Scan a host for open ports:
-   $ nw portscanner --host 192.168.1.1
+   $ netwiz port --host 192.168.1.1
 
    Scan a host within a specific port range:
-   $ nw portscanner --host 192.168.1.1 --range 80-100
+   $ netwiz port --host 192.168.1.1 --range 80-100
+
+   Kill a process running on a specific port:
+   $ netwiz port --kill 8080
 
 For more information and detailed usage of each command, use the help command followed by the command name, e.g., 'nw help httpclient'.`,
 }
