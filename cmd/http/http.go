@@ -17,7 +17,6 @@ import (
 )
 
 var (
-	url     string
 	method  string
 	data    string
 	headers []string
@@ -28,8 +27,17 @@ const maxRetries = 5
 
 // httpCmd represents the http command
 var HttpCmd = &cobra.Command{
-	Use:   "http",
+	Use:   "http [flags] <url>",
 	Short: "A brief description of your command",
+	Args: func(cmd *cobra.Command, args []string) error {
+		err := cobra.ExactArgs(1)(cmd, args)
+
+		if err != nil {
+			return fmt.Errorf("no URL provided")
+		}
+
+		return nil
+	},
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -41,6 +49,7 @@ to quickly create a Cobra application.`,
 			return fmt.Errorf("retry value cannot exceed %d", maxRetries)
 		}
 
+		url := args[0]
 		upperCaseMethod := strings.ToUpper(method)
 		performHttpRequest(url, upperCaseMethod, data, headers)
 		return nil
@@ -48,12 +57,10 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	HttpCmd.Flags().StringVarP(&url, "url", "u", "", "URL to make the request to")
 	HttpCmd.Flags().StringVarP(&method, "method", "m", "GET", "HTTP method to use")
 	HttpCmd.Flags().StringVarP(&data, "data", "d", "", "Data to send with the request")
 	HttpCmd.Flags().StringArrayVarP(&headers, "header", "H", []string{}, "Headers to include in the request")
 	HttpCmd.Flags().IntVarP(&retry, "retry", "r", 0, "Number of times to retry the request")
-	HttpCmd.MarkFlagRequired("url")
 }
 
 func backoff(retries int) time.Duration {
@@ -115,7 +122,6 @@ func performHttpRequest(url, method, data string, headers []string) error {
 
 		if err == nil {
 			drainRespBody(resp)
-			resp.Body.Close()
 		}
 
 		req.Body = io.NopCloser(bytes.NewBuffer(bytesData))
